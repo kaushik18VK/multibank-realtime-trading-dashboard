@@ -9,6 +9,7 @@ import {
 } from 'recharts';
 import type { HistoricalPoint, TickerSymbol } from '../types';
 import { formatPrice, formatTime } from '../lib/format';
+import { getSymbolColor } from '../lib/theme';
 
 type Props = {
   symbol: TickerSymbol;
@@ -16,6 +17,9 @@ type Props = {
 };
 
 export function PriceChart({ symbol, history }: Props) {
+  const color = getSymbolColor(symbol);
+  const gradientId = `priceFill-${symbol}`;
+
   return (
     <section className="panel chart-panel">
       <div className="panel-header">
@@ -25,9 +29,9 @@ export function PriceChart({ symbol, history }: Props) {
         <ResponsiveContainer width="100%" height="100%">
           <AreaChart data={history} margin={{ top: 12, right: 12, left: 0, bottom: 0 }}>
             <defs>
-              <linearGradient id="priceFill" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="#16a34a" stopOpacity={0.35} />
-                <stop offset="100%" stopColor="#16a34a" stopOpacity={0.02} />
+              <linearGradient id={gradientId} x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor={color} stopOpacity={0.42} />
+                <stop offset="100%" stopColor={color} stopOpacity={0.02} />
               </linearGradient>
             </defs>
             <CartesianGrid strokeDasharray="3 3" stroke="rgba(148, 163, 184, 0.2)" />
@@ -42,19 +46,19 @@ export function PriceChart({ symbol, history }: Props) {
               formatter={(value: number) => formatPrice(symbol, value)}
               labelFormatter={(value) => formatTime(String(value))}
               contentStyle={{
-                background: '#0f172a',
-                border: '1px solid rgba(148,163,184,0.35)',
+                background: 'var(--tooltip-bg)',
+                border: '1px solid var(--tooltip-border)',
                 borderRadius: '10px'
               }}
-              labelStyle={{ color: '#e2e8f0' }}
-              itemStyle={{ color: '#e2e8f0' }}
+              labelStyle={{ color: 'var(--tooltip-text)' }}
+              itemStyle={{ color: 'var(--tooltip-text)' }}
             />
             <Area
               type="monotone"
               dataKey="price"
-              stroke="#22c55e"
+              stroke={color}
               strokeWidth={2}
-              fill="url(#priceFill)"
+              fill={`url(#${gradientId})`}
               isAnimationActive={false}
             />
           </AreaChart>

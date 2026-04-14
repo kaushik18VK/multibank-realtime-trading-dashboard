@@ -1,4 +1,14 @@
-export type TickerSymbol = 'AAPL' | 'TSLA' | 'BTC-USD' | 'ETH-USD' | 'EUR-USD';
+export type TickerSymbol =
+  | 'AAPL'
+  | 'TSLA'
+  | 'NVDA'
+  | 'BTC-USD'
+  | 'ETH-USD'
+  | 'SOL-USD'
+  | 'XRP-USD'
+  | 'XAU-USD'
+  | 'EUR-USD'
+  | 'GBP-USD';
 
 export interface Tick {
   symbol: TickerSymbol;

@@ -3,9 +3,14 @@ import type { HistoricalPoint, Tick, TickerSymbol } from './types.js';
 const TICKERS: Array<{ symbol: TickerSymbol; base: number; drift: number; volatility: number }> = [
   { symbol: 'AAPL', base: 187.4, drift: 0.01, volatility: 0.8 },
   { symbol: 'TSLA', base: 171.8, drift: 0.015, volatility: 1.5 },
+  { symbol: 'NVDA', base: 924.2, drift: 0.03, volatility: 3.8 },
   { symbol: 'BTC-USD', base: 68250, drift: 1.5, volatility: 145 },
   { symbol: 'ETH-USD', base: 3320, drift: 0.5, volatility: 35 },
-  { symbol: 'EUR-USD', base: 1.08, drift: 0, volatility: 0.002 }
+  { symbol: 'SOL-USD', base: 167.4, drift: 0.22, volatility: 4.2 },
+  { symbol: 'XRP-USD', base: 0.62, drift: 0.001, volatility: 0.018 },
+  { symbol: 'XAU-USD', base: 2341.7, drift: 0.14, volatility: 7.2 },
+  { symbol: 'EUR-USD', base: 1.08, drift: 0, volatility: 0.002 },
+  { symbol: 'GBP-USD', base: 1.27, drift: 0.0004, volatility: 0.0027 }
 ];
 
 export class MarketDataService {
