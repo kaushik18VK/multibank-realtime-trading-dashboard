@@ -27,4 +27,15 @@ describe('MarketDataService', () => {
     const history = service.getHistory('TSLA', 999);
     expect(history.length).toBeLessThanOrEqual(10);
   });
+
+  it('throws for unknown symbols', () => {
+    const service = new MarketDataService();
+    expect(() => service.generateNextTick('DOGE-USD' as never)).toThrowError(/Unknown symbol/);
+  });
+
+  it('returns a limited subset of history points', () => {
+    const service = new MarketDataService();
+    const subset = service.getHistory('BTC-USD', 5);
+    expect(subset.length).toBeLessThanOrEqual(5);
+  });
 });

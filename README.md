@@ -10,8 +10,10 @@ This project is a fullstack implementation of the MultiBank coding challenge usi
 - Live ticker list with price + 24h percentage change
 - Real-time chart updates for selected instrument
 - Ticker switching with historical REST backfill
+- Functional top navigation with section switching (`Dashboard`, `Markets`, `Insights`, `Settings`)
+- Theme support with persisted light/dark mode toggle
 - Backend REST API and WebSocket stream
-- Basic backend unit tests for market data logic
+- Unit tests for backend market-data service and frontend UI behaviors
 - Responsive UI for desktop and mobile
 
 ## Architecture
@@ -75,6 +77,13 @@ cd backend
 npm test
 ```
 
+Frontend tests:
+
+```bash
+cd frontend
+npm test
+```
+
 ## Assumptions and Trade-offs
 
 - Price feed is simulated with deterministic constraints and random volatility.
@@ -84,5 +93,9 @@ npm test
 
 ## Bonus Notes
 
-- Implemented clean separation between simulation logic and transport/API layers.
+- Added a richer market universe (equities, crypto, FX, and gold instruments).
+- Implemented top-level section navigation with dedicated `Markets`, `Insights`, and `Settings` views.
+- Added persistent light/dark theme support with a UI toggle in the top navigation.
+- Added a market overview widget with breadth, average move, and top movers.
+- Included both backend and frontend test coverage for core behavior.
 - Dockerized both services for reproducible execution.
