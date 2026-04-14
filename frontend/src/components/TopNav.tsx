@@ -1,17 +1,17 @@
-import { useState } from 'react';
 import type { ThemeMode } from '../hooks/useTheme';
+
+export const NAV_ITEMS = ['Dashboard', 'Markets', 'Insights', 'Settings'] as const;
+export type NavSection = (typeof NAV_ITEMS)[number];
 
 type Props = {
   connected: boolean;
   theme: ThemeMode;
+  activeSection: NavSection;
+  onSectionChange: (section: NavSection) => void;
   onToggleTheme: () => void;
 };
 
-const NAV_ITEMS = ['Dashboard', 'Markets', 'Insights', 'Settings'] as const;
-
-export function TopNav({ connected, theme, onToggleTheme }: Props) {
-  const [active, setActive] = useState<(typeof NAV_ITEMS)[number]>('Dashboard');
-
+export function TopNav({ connected, theme, activeSection, onSectionChange, onToggleTheme }: Props) {
   return (
     <nav className="panel topnav">
       <div className="brand-block">
@@ -26,10 +26,10 @@ export function TopNav({ connected, theme, onToggleTheme }: Props) {
         {NAV_ITEMS.map((item) => (
           <button
             key={item}
-            className={`nav-link ${active === item ? 'active' : ''}`}
-            onClick={() => setActive(item)}
+            className={`nav-link ${activeSection === item ? 'active' : ''}`}
+            onClick={() => onSectionChange(item)}
             role="tab"
-            aria-selected={active === item}
+            aria-selected={activeSection === item}
           >
             {item}
           </button>
