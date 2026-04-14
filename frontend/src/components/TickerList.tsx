@@ -21,7 +21,10 @@ export function TickerList({ tickers, selected, ticksBySymbol, onSelect }: Props
           return (
             <li key={ticker}>
               <button className={`ticker-item ${isActive ? 'active' : ''}`} onClick={() => onSelect(ticker)}>
-                <span className="ticker-symbol">{ticker}</span>
+                <span className="ticker-symbol">
+                  <span className="ticker-dot" />
+                  {ticker}
+                </span>
                 <span className="ticker-price">{tick ? formatPrice(ticker, tick.price) : '--'}</span>
                 <span className={`ticker-change ${(tick?.change24hPct ?? 0) >= 0 ? 'up' : 'down'}`}>
                   {tick ? `${tick.change24hPct >= 0 ? '+' : ''}${tick.change24hPct.toFixed(2)}%` : '--'}
