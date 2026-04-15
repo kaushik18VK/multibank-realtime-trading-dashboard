@@ -5,6 +5,10 @@ This project is a fullstack implementation of the MultiBank coding challenge usi
 - **Backend:** Node.js + TypeScript + Express + WebSocket (`ws`)
 - **Containerization:** Docker + Docker Compose
 
+## UI Preview (Test Case Page)
+
+![Dashboard Test Case Page](docs/screenshots/dashboard-test-page.png)
+
 ## Features
 
 - Live ticker list with price + 24h percentage change

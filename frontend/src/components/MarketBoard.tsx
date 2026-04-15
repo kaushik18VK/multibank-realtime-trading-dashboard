@@ -13,6 +13,8 @@ type MarketRow = {
   name: string;
   price: number;
   change24hPct: number;
+  volume24hValue: number;
+  marketCapValue: number;
   volume24h: string;
   marketCap: string;
 };
@@ -72,6 +74,8 @@ function toMarketRows(tickers: TickerSymbol[], ticksBySymbol: Record<string, Tic
       name: SYMBOL_NAMES[symbol],
       price,
       change24hPct: tick?.change24hPct ?? 0,
+      volume24hValue: volumeBase,
+      marketCapValue: capBase,
       volume24h: humanizeMoney(volumeBase),
       marketCap: humanizeMoney(capBase)
     };
@@ -133,9 +137,7 @@ export function MarketBoard({ tickers, ticksBySymbol, onSelect }: Props) {
   }, [activeChip, activeMarketTab, liveRows]);
 
   const topGainers = [...filteredRows].sort((a, b) => b.change24hPct - a.change24hPct).slice(0, 3);
-  const topVolume = [...filteredRows]
-    .sort((a, b) => Number(b.volume24h.replace(/[^\d.]/g, '')) - Number(a.volume24h.replace(/[^\d.]/g, '')))
-    .slice(0, 3);
+  const topVolume = [...filteredRows].sort((a, b) => b.volume24hValue - a.volume24hValue).slice(0, 3);
   const hot = [...filteredRows].slice(0, 3);
 
   return (
