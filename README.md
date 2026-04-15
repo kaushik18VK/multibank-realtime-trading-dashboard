@@ -21,7 +21,7 @@ This project is a fullstack implementation of the MultiBank coding challenge usi
 - `backend/src/marketDataService.ts` encapsulates pricing simulation and history buffering.
 - `backend/src/index.ts` exposes REST endpoints and pushes websocket updates.
 - `frontend/src/hooks/useMarketStream.ts` owns data fetching, websocket handling, and UI state.
-- Presentational components are split into `TopNav`, `Header`, `MarketOverview`, `TickerList`, and `PriceChart`.
+- Presentational components are split into `TopNav`, `Header`, `MarketBoard`, and `PriceChart`.
 
 ## API Overview
 

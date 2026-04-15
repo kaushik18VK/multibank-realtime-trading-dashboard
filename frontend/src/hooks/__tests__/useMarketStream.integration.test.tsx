@@ -110,7 +110,7 @@ describe('useMarketStream integration flow', () => {
 
     await waitFor(() => {
       expect(result.current.ticksBySymbol['AAPL']?.price).toBe(185);
-      expect(result.current.history.at(-1)?.price).toBe(185);
+      expect(result.current.history[result.current.history.length - 1]?.price).toBe(185);
     });
   });
 

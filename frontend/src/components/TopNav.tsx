@@ -15,10 +15,12 @@ export function TopNav({ connected, theme, activeSection, onSectionChange, onTog
   return (
     <nav className="panel topnav">
       <div className="brand-block">
-        <span className="brand-dot" />
-        <div>
+        <span className="brand-mark" aria-hidden>
+          MB
+        </span>
+        <div className="brand-copy">
           <strong>MultiBank Terminal</strong>
-          <p>Real-time execution view</p>
+          <p>Institutional multi-asset monitoring</p>
         </div>
       </div>
 
@@ -37,6 +39,7 @@ export function TopNav({ connected, theme, activeSection, onSectionChange, onTog
       </div>
 
       <div className="nav-actions">
+        <span className="nav-chip">Global Markets</span>
         <span className={`feed-state ${connected ? 'up' : 'down'}`}>{connected ? 'Feed Live' : 'Feed Offline'}</span>
         <button className="theme-toggle" onClick={onToggleTheme}>
           {theme === 'dark' ? 'Light Mode' : 'Dark Mode'}

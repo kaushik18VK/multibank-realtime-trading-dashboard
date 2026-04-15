@@ -13,6 +13,8 @@ type StreamState = {
 };
 
 const MAX_POINTS = 180;
+const RECONNECT_BASE_DELAY_MS = 1000;
+const RECONNECT_MAX_DELAY_MS = 10_000;
 
 export function useMarketStream() {
   const [state, setState] = useState<StreamState>({
@@ -26,6 +28,9 @@ export function useMarketStream() {
   });
 
   const wsRef = useRef<WebSocket | null>(null);
+  const reconnectTimerRef = useRef<number | null>(null);
+  const reconnectAttemptsRef = useRef(0);
+  const shouldReconnectRef = useRef(true);
 
   useEffect(() => {
     let cancelled = false;
@@ -57,50 +62,88 @@ export function useMarketStream() {
   }, []);
 
   useEffect(() => {
-    const ws = new WebSocket(getWsUrl());
-    wsRef.current = ws;
+    shouldReconnectRef.current = true;
 
-    ws.onopen = () => {
-      setState((prev) => ({ ...prev, connected: true }));
-    };
-
-    ws.onclose = () => {
-      setState((prev) => ({ ...prev, connected: false }));
-    };
-
-    ws.onerror = () => {
-      setState((prev) => ({ ...prev, connected: false }));
-    };
-
-    ws.onmessage = (event) => {
-      try {
-        const message = JSON.parse(event.data) as { type: string; data?: Tick[] | Tick };
-        if (!message.data) return;
-
-        const updates = Array.isArray(message.data) ? message.data : [message.data];
-
-        setState((prev) => {
-          const nextTicks = { ...prev.ticksBySymbol };
-          let nextHistory = prev.history;
-
-          for (const tick of updates) {
-            nextTicks[tick.symbol] = tick;
-
-            if (tick.symbol === prev.selected) {
-              const appended = [...nextHistory, { timestamp: tick.timestamp, price: tick.price }];
-              nextHistory = appended.slice(Math.max(0, appended.length - MAX_POINTS));
-            }
-          }
-
-          return { ...prev, ticksBySymbol: nextTicks, history: nextHistory };
-        });
-      } catch {
-        // Ignore malformed websocket payloads
+    function clearReconnectTimer() {
+      if (reconnectTimerRef.current !== null) {
+        window.clearTimeout(reconnectTimerRef.current);
+        reconnectTimerRef.current = null;
       }
-    };
+    }
+
+    function scheduleReconnect() {
+      if (!shouldReconnectRef.current || reconnectTimerRef.current !== null) {
+        return;
+      }
+
+      const delay = Math.min(
+        RECONNECT_BASE_DELAY_MS * 2 ** reconnectAttemptsRef.current,
+        RECONNECT_MAX_DELAY_MS
+      );
+      reconnectAttemptsRef.current += 1;
+
+      reconnectTimerRef.current = window.setTimeout(() => {
+        reconnectTimerRef.current = null;
+        connectSocket();
+      }, delay);
+    }
+
+    function connectSocket() {
+      if (!shouldReconnectRef.current) {
+        return;
+      }
+
+      const ws = new WebSocket(getWsUrl());
+      wsRef.current = ws;
+
+      ws.onopen = () => {
+        reconnectAttemptsRef.current = 0;
+        setState((prev) => ({ ...prev, connected: true }));
+      };
+
+      ws.onclose = () => {
+        setState((prev) => ({ ...prev, connected: false }));
+        scheduleReconnect();
+      };
+
+      ws.onerror = () => {
+        setState((prev) => ({ ...prev, connected: false }));
+      };
+
+      ws.onmessage = (event) => {
+        try {
+          const message = JSON.parse(event.data) as { type: string; data?: Tick[] | Tick };
+          if (!message.data) return;
+
+          const updates = Array.isArray(message.data) ? message.data : [message.data];
+
+          setState((prev) => {
+            const nextTicks = { ...prev.ticksBySymbol };
+            let nextHistory = prev.history;
+
+            for (const tick of updates) {
+              nextTicks[tick.symbol] = tick;
+
+              if (tick.symbol === prev.selected) {
+                const appended = [...nextHistory, { timestamp: tick.timestamp, price: tick.price }];
+                nextHistory = appended.slice(Math.max(0, appended.length - MAX_POINTS));
+              }
+            }
+
+            return { ...prev, ticksBySymbol: nextTicks, history: nextHistory };
+          });
+        } catch {
+          // Ignore malformed websocket payloads
+        }
+      };
+    }
+
+    connectSocket();
 
     return () => {
-      ws.close();
+      shouldReconnectRef.current = false;
+      clearReconnectTimer();
+      wsRef.current?.close();
     };
   }, []);
 

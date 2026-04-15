@@ -12,7 +12,7 @@ export function Header({ selected, selectedTick, connected }: Props) {
     <header className="panel topbar">
       <div>
         <h1>Real-Time Trading Dashboard</h1>
-        <p>Live websocket stream + REST history</p>
+        <p>Live pricing, liquidity pulse, and execution-facing market context</p>
       </div>
       <div className="topbar-metrics">
         <div className="pill">

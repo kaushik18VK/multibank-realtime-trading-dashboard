@@ -1,8 +1,7 @@
 import { useState } from 'react';
 import { Header } from './components/Header';
-import { MarketOverview } from './components/MarketOverview';
+import { MarketBoard } from './components/MarketBoard';
 import { PriceChart } from './components/PriceChart';
-import { TickerList } from './components/TickerList';
 import { type NavSection, TopNav } from './components/TopNav';
 import { useMarketStream } from './hooks/useMarketStream';
 import { useTheme } from './hooks/useTheme';
@@ -33,21 +32,18 @@ function App() {
         onToggleTheme={toggleTheme}
       />
       {activeSection === 'Dashboard' && (
-        <>
+        <div className="section-fade">
           <Header selected={selected} selectedTick={selectedTick} connected={connected} />
-          <MarketOverview tickers={tickers} ticksBySymbol={ticksBySymbol} connected={connected} />
-          <div className="grid">
-            <TickerList tickers={tickers} selected={selected} ticksBySymbol={ticksBySymbol} onSelect={selectTicker} />
-            {selected ? (
-              <PriceChart symbol={selected} history={history} />
-            ) : (
-              <section className="panel chart-panel empty">No ticker selected</section>
-            )}
-          </div>
-        </>
+          <MarketBoard tickers={tickers} ticksBySymbol={ticksBySymbol} onSelect={selectTicker} />
+          {selected ? (
+            <PriceChart symbol={selected} history={history} />
+          ) : (
+            <section className="panel chart-panel empty">No ticker selected</section>
+          )}
+        </div>
       )}
       {activeSection === 'Markets' && (
-        <section className="panel section-panel">
+        <section className="panel section-panel section-fade">
           <div className="panel-header">
             <h2>Market Snapshot</h2>
           </div>
@@ -73,7 +69,7 @@ function App() {
         </section>
       )}
       {activeSection === 'Insights' && (
-        <section className="panel section-panel">
+        <section className="panel section-panel section-fade">
           <div className="panel-header">
             <h2>Insights</h2>
           </div>
@@ -89,7 +85,7 @@ function App() {
         </section>
       )}
       {activeSection === 'Settings' && (
-        <section className="panel section-panel">
+        <section className="panel section-panel section-fade">
           <div className="panel-header">
             <h2>Settings</h2>
           </div>
