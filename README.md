@@ -7,7 +7,9 @@ This project is a fullstack implementation of the MultiBank coding challenge usi
 
 ## UI Preview (Test Case Page)
 
-![Dashboard Test Case Page](docs/screenshots/dashboard-test-page.png)
+![Dashboard Test Case Page] 
+<img width="1024" height="1197" alt="image" src="https://github.com/user-attachments/assets/5d27636b-b4ee-4256-940f-c62ad57d867d" />
+
 
 ## Features
 
