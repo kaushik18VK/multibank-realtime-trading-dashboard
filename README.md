@@ -5,9 +5,13 @@ This project is a fullstack implementation of the MultiBank coding challenge usi
 - **Backend:** Node.js + TypeScript + Express + WebSocket (`ws`)
 - **Containerization:** Docker + Docker Compose
 
-## UI Preview (Test Case Page)
+## Prerequisites
 
-![Dashboard Test Case Page] 
+- Node.js `>=18` (recommended: Node.js `20 LTS` or newer)
+- npm `>=9`
+
+## Dashboard Test Case Page
+
 <img width="1024" height="1197" alt="image" src="https://github.com/user-attachments/assets/5d27636b-b4ee-4256-940f-c62ad57d867d" />
 
 
